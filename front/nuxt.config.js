@@ -2,7 +2,8 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   server: {
-    host:'0.0.0.0'
+    host:'0.0.0.0',
+    port: 4100
   },
   mode: 'spa',
   /*
@@ -49,7 +50,8 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    '@nuxtjs/proxy'
   ],
   /*
   ** Axios module configuration
@@ -88,4 +90,11 @@ export default {
     extend (config, ctx) {
     }
   }
+  /*
+  proxy: {
+    '/api': {
+      target: 'http://localhost:3100',
+    }
+  }
+  */
 }

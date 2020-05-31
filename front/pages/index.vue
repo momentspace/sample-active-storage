@@ -4,89 +4,78 @@
     justify-center
     align-center
   >
-    <v-flex
-      xs12
-      sm8
-      md6
+    <v-container
+      md-10
+      sm-10
+      xs-12
     >
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
+      <UploadImage/>
+      <spacers/>
+      <ReceiptList
+        v-bind:receipts=images
+      />
+    </v-container>
   </v-layout>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-
+import UploadImage from "@/components/upload_image.vue";
+import ReceiptList from "@/components/receipt_list.vue";
 export default {
   components: {
-    Logo,
-    VuetifyLogo
+    UploadImage,
+    ReceiptList
+  },
+  data() {
+    return {
+      images: [
+        {id: 1, description: "test", url: "https://pbs.twimg.com/profile_images/1237755166381592576/Vpfmfpxo_400x400.jpg"},
+        {id: 2, description: "test2", url: "https://pbs.twimg.com/profile_images/875197603050176512/jrMv_xrc_400x400.jpg"},
+        {id: 3, description: "test2", url: "https://pbs.twimg.com/profile_images/875197603050176512/jrMv_xrc_400x400.jpg"},
+        {id: 4, description: "test2", url: "https://pbs.twimg.com/profile_images/875197603050176512/jrMv_xrc_400x400.jpg"},
+        {id: 5, description: "test2", url: "https://pbs.twimg.com/profile_images/875197603050176512/jrMv_xrc_400x400.jpg"},
+        {id: 6, description: "test2", url: "https://pbs.twimg.com/profile_images/875197603050176512/jrMv_xrc_400x400.jpg"},
+        {id: 7, description: "test2", url: "https://pbs.twimg.com/profile_images/875197603050176512/jrMv_xrc_400x400.jpg"},
+      ],
+      valid: false,
+      file: null,
+      fileRules: [
+        value => {
+          if (value && this.isImage(value.type) && this.rangeSize(value.size)) {
+            return true;
+          }
+          return false;
+        }
+      ],
+    }
+  },
+  mounted: function() {
+    this.valid = false;
+  },
+  methods: {
+    upload() {
+      let result = this.$refs.form.validate();
+      if (result) {
+        let data = new FormData();
+        data.append("image[description]", "sample");
+        data.append('image[data]', this.file);
+        this.send(data)
+      }
+    },
+    rangeSize(size) {
+      return size < 2000000;
+    },
+    isImage(type) {
+      return ["image/jpeg", "image/png"].includes(type);
+    },
+    async send(data) {
+      const config = {
+        headers: { contentType: "multipart/form-data" }
+      }
+      const url = 'http://192.168.128.254:3100/api/v1/images/'
+      const ret = await this.$axios.$post(url, data, config);
+      console.log(ret);
+    }
   }
 }
 </script>

@@ -9,4 +9,4 @@ services:
       - .:/app
     user: "${UID}:${GID}"
     ports:
-      - "4100:3000"
+      - "4100:4100"
