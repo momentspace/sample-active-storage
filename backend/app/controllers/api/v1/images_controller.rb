@@ -5,7 +5,7 @@ module Api
     
       # GET /images
       def index
-        @images = Image.all
+        @images = Image.all.order(id: "DESC")
       
         render json: images_json
       end
