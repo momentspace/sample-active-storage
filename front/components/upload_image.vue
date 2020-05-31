@@ -3,7 +3,7 @@
     <v-col>
       <v-card>
         <v-card-title class="headline">
-          Active-Storage Sample Page
+          Image Upload Form
         </v-card-title>
         <v-form
           ref="form"
@@ -11,11 +11,17 @@
           lazy-validation
         >
           <v-card-text>
+            <v-text-field
+              label="説明"
+              prependIcon="mdi-text"
+              placeholder="アップロードする画像の説明"
+              v-model="description"
+            />
             <v-file-input
               :rules="fileRules"
               accept="image/png, image/jpeg"
               label="image file"
-              placeholder="placeholder"
+              placeholder="アップロードする画像を選択してください"
               prepend-icon="mdi-camera"
               :clearable=true
               :show-size=true
@@ -44,6 +50,7 @@
 export default {
   components: {
   },
+  props: ["uploadAction"],
   data() {
     return {
       valid: false,
@@ -56,6 +63,7 @@ export default {
           return false;
         }
       ],
+      description: "",
     }
   },
   mounted: function() {
@@ -64,12 +72,7 @@ export default {
   methods: {
     upload() {
       let result = this.$refs.form.validate();
-      if (result) {
-        let data = new FormData();
-        data.append("image[description]", "sample");
-        data.append('image[data]', this.file);
-        this.send(data)
-      }
+      this.uploadAction(this.description, this.file);
     },
     rangeSize(size) {
       return size < 2000000;
@@ -77,14 +80,6 @@ export default {
     isImage(type) {
       return ["image/jpeg", "image/png"].includes(type);
     },
-    async send(data) {
-      const config = {
-        headers: { contentType: "multipart/form-data" }
-      }
-      const url = 'http://192.168.128.254:3100/api/v1/images/'
-      const ret = await this.$axios.$post(url, data, config);
-      console.log(ret);
-    }
   }
 }
 </script>

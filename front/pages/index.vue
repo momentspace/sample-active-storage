@@ -9,8 +9,10 @@
       sm-10
       xs-12
     >
-      <UploadImage/>
-      <spacers/>
+      <UploadImage
+        :uploadAction=upload
+      />
+      <v-btn @click=refresh>sync</v-btn>
       <ReceiptList
         v-bind:receipts=images
       />
@@ -28,15 +30,7 @@ export default {
   },
   data() {
     return {
-      images: [
-        {id: 1, description: "test", url: "https://pbs.twimg.com/profile_images/1237755166381592576/Vpfmfpxo_400x400.jpg"},
-        {id: 2, description: "test2", url: "https://pbs.twimg.com/profile_images/875197603050176512/jrMv_xrc_400x400.jpg"},
-        {id: 3, description: "test2", url: "https://pbs.twimg.com/profile_images/875197603050176512/jrMv_xrc_400x400.jpg"},
-        {id: 4, description: "test2", url: "https://pbs.twimg.com/profile_images/875197603050176512/jrMv_xrc_400x400.jpg"},
-        {id: 5, description: "test2", url: "https://pbs.twimg.com/profile_images/875197603050176512/jrMv_xrc_400x400.jpg"},
-        {id: 6, description: "test2", url: "https://pbs.twimg.com/profile_images/875197603050176512/jrMv_xrc_400x400.jpg"},
-        {id: 7, description: "test2", url: "https://pbs.twimg.com/profile_images/875197603050176512/jrMv_xrc_400x400.jpg"},
-      ],
+      images: [],
       valid: false,
       file: null,
       fileRules: [
@@ -51,16 +45,15 @@ export default {
   },
   mounted: function() {
     this.valid = false;
+    this.refresh();
   },
   methods: {
-    upload() {
-      let result = this.$refs.form.validate();
-      if (result) {
-        let data = new FormData();
-        data.append("image[description]", "sample");
-        data.append('image[data]', this.file);
-        this.send(data)
-      }
+    upload(description, file) {
+      let data = new FormData();
+      data.append("image[description]", description);
+      data.append('image[data]', file);
+      this.uploadImage(data)
+      this.refresh();
     },
     rangeSize(size) {
       return size < 2000000;
@@ -68,14 +61,20 @@ export default {
     isImage(type) {
       return ["image/jpeg", "image/png"].includes(type);
     },
-    async send(data) {
+    async uploadImage(data) {
       const config = {
         headers: { contentType: "multipart/form-data" }
       }
       const url = 'http://192.168.128.254:3100/api/v1/images/'
       const ret = await this.$axios.$post(url, data, config);
       console.log(ret);
-    }
+    },
+    async refresh() {
+      const url = 'http://192.168.128.254:3100/api/v1/images/'
+      const ret = await this.$axios.$get(url);
+      console.log(ret);
+      this.images = ret;
+    },
   }
 }
 </script>

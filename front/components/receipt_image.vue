@@ -9,15 +9,16 @@
       <v-list-item-avatar color="grey"></v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title class="headline">{{description}}</v-list-item-title>
-        <v-list-item-subtitle>by author</v-list-item-subtitle>
+        <v-list-item-subtitle>by anonymous</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
     <v-list-item>
       <v-list-item-content>
         <v-card-text>
-          Visit ten places on our planet that are undergoing the biggest changes today.
+          ここに画像に関する複数のパラメータを表示するようにする
         </v-card-text>
+        <v-card-text/>
         <v-card-text/>
       </v-list-item-content>
 
