@@ -15,10 +15,10 @@
               label="説明"
               prependIcon="mdi-text"
               placeholder="アップロードする画像の説明"
-              v-model="description"
+              v-model=description
             />
             <v-file-input
-              :rules="fileRules"
+              :rules=fileRules
               accept="image/png, image/jpeg"
               label="image file"
               placeholder="アップロードする画像を選択してください"
@@ -27,7 +27,7 @@
               :show-size=true
               :counter=true
               required
-              v-model="file"
+              v-model=file
             />
           </v-card-text>
           <v-card-actions>
@@ -35,7 +35,7 @@
             <v-btn
               :disabled="!valid"
               color="primary"
-              @click="upload"
+              @click="uploadAction(description, file)"
             >
               upload
             </v-btn>
@@ -48,9 +48,13 @@
 
 <script>
 export default {
+  // model: {
+    // prop: uploadFile,
+    // event: upload
+  // },
   components: {
   },
-  props: ["uploadAction"],
+  props: ["uploadAction", "maxSize", ],
   data() {
     return {
       valid: false,
@@ -75,7 +79,7 @@ export default {
       this.uploadAction(this.description, this.file);
     },
     rangeSize(size) {
-      return size < 2000000;
+      return size < this.maxSize;
     },
     isImage(type) {
       return ["image/jpeg", "image/png"].includes(type);

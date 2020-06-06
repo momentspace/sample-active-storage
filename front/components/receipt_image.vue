@@ -4,7 +4,6 @@
     outlined
     tile
   >
-
     <v-list-item>
       <v-list-item-avatar color="grey"></v-list-item-avatar>
       <v-list-item-content>
@@ -28,7 +27,10 @@
         color=grey
       >
         <v-img
+        id="test"
           :src=url
+          hover
+          @click="$emit('click', url)"
         ></v-img>
       </v-list-item-avatar>
     </v-list-item>
@@ -49,12 +51,18 @@
 
 <script>
 export default {
+  model: {
+    prop: "src",
+    event: "click"
+  },
   components: {
   },
   props: ['url', 'description'],
   data() {
     return {
     }
+  },
+  methods: {
   }
 }
 </script>

@@ -10,9 +10,9 @@
       xs-12
     >
       <UploadImage
-        :uploadAction=upload
+        :uploadAction="upload"
+        maxSize=5000000
       />
-      <v-btn @click=refresh>sync</v-btn>
       <ReceiptList
         v-bind:receipts=images
       />
@@ -45,7 +45,7 @@ export default {
   },
   mounted: function() {
     this.valid = false;
-    this.refresh();
+    this.initialize();
   },
   methods: {
     upload(description, file) {
@@ -53,13 +53,6 @@ export default {
       data.append("image[description]", description);
       data.append('image[data]', file);
       this.uploadImage(data)
-      this.refresh();
-    },
-    rangeSize(size) {
-      return size < 2000000;
-    },
-    isImage(type) {
-      return ["image/jpeg", "image/png"].includes(type);
     },
     async uploadImage(data) {
       const config = {
@@ -67,9 +60,10 @@ export default {
       }
       const url = 'http://192.168.128.254:3100/api/v1/images/'
       const ret = await this.$axios.$post(url, data, config);
+      this.images.unshift(ret)
       console.log(ret);
     },
-    async refresh() {
+    async initialize() {
       const url = 'http://192.168.128.254:3100/api/v1/images/'
       const ret = await this.$axios.$get(url);
       console.log(ret);
