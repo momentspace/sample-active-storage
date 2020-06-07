@@ -15,7 +15,7 @@
     <v-list-item>
       <v-list-item-content>
         <v-card-text>
-          ここに画像に関する複数のパラメータを表示するようにする
+          さんぷるぷろじぇくとコンテンツ
         </v-card-text>
         <v-card-text/>
         <v-card-text/>
@@ -27,10 +27,7 @@
         color=grey
       >
         <v-img
-        id="test"
           :src=url_thumb
-          hover
-          @click="$emit('click', url)"
         ></v-img>
       </v-list-item-avatar>
     </v-list-item>

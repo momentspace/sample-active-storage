@@ -9,24 +9,27 @@
       sm-10
       xs-12
     >
-      <UploadImage
+      <ImageUploader
         :uploadAction="upload"
         maxSize=5000000
       />
-      <ReceiptList
-        v-bind:receipts=images
+      <ImageCardList
+        v-bind:images=images
       />
     </v-container>
   </v-layout>
 </template>
 
 <script>
-import UploadImage from "@/components/upload_image.vue";
-import ReceiptList from "@/components/receipt_list.vue";
+import ImageUploader from "@/components/image_uploader.vue";
+import ImageCardList from "@/components/image_card_list.vue";
+
+const baseurl = `http://${location.hostname}`;
+const baseurlApi = `http://${location.hostname}:3100/`;
 export default {
   components: {
-    UploadImage,
-    ReceiptList
+    ImageUploader,
+    ImageCardList 
   },
   data() {
     return {
@@ -58,13 +61,13 @@ export default {
       const config = {
         headers: { contentType: "multipart/form-data" }
       }
-      const url = `http://${location.hostname}:3100/api/v1/images/`
+      const url = `${baseurlApi}/api/v1/images/`
       const ret = await this.$axios.$post(url, data, config);
       this.images.unshift(ret)
       console.log(ret);
     },
     async initialize() {
-      const url = `http://${location.hostname}:3100/api/v1/images/`
+      const url = `${baseurlApi}/api/v1/images/`
       const ret = await this.$axios.$get(url);
       console.log(ret);
       this.images = ret;

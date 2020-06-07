@@ -48,13 +48,7 @@
 
 <script>
 export default {
-  // model: {
-    // prop: uploadFile,
-    // event: upload
-  // },
-  components: {
-  },
-  props: ["uploadAction", "maxSize", ],
+  props: ["uploadAction", "maxSize"],
   data() {
     return {
       valid: false,
