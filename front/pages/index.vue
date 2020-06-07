@@ -58,13 +58,13 @@ export default {
       const config = {
         headers: { contentType: "multipart/form-data" }
       }
-      const url = 'http://test.starferry.net:3100/api/v1/images/'
+      const url = `http://${location.hostname}:3100/api/v1/images/`
       const ret = await this.$axios.$post(url, data, config);
       this.images.unshift(ret)
       console.log(ret);
     },
     async initialize() {
-      const url = 'http://test.starferry.net:3100/api/v1/images/'
+      const url = `http://${location.hostname}:3100/api/v1/images/`
       const ret = await this.$axios.$get(url);
       console.log(ret);
       this.images = ret;
