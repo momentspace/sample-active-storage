@@ -28,7 +28,7 @@
       >
         <v-img
         id="test"
-          :src=url
+          :src=url_thumb
           hover
           @click="$emit('click', url)"
         ></v-img>
@@ -57,7 +57,7 @@ export default {
   },
   components: {
   },
-  props: ['url', 'description'],
+  props: ['id', 'url', 'url_thumb', 'description'],
   data() {
     return {
     }

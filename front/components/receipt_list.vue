@@ -13,7 +13,6 @@
         >
           <ReceiptImage 
             v-bind=receipt
-            v-model=imgUrl
             v-on:click=imageClicked
           />
         </v-card>
@@ -41,10 +40,13 @@ export default {
       imgUrl: "",
     }
   },
+  computed: {
+  },
   mounted: function() {
   },
   methods: {
     imageClicked(url) {
+      this.imgUrl = url;
       this.visible = true;
     },
   },
